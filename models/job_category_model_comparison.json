@@ -1,0 +1,68 @@
+{
+  "task": "job-category classification",
+  "baseline_comparison": {
+    "baseline_metrics_path": "C:\\Users\\HP\\Desktop\\SkillGraph-X-Starter\\SkillGraph-X\\models\\baseline_metrics.json",
+    "baseline_exists": true
+  },
+  "selected_model": {
+    "model_name": "XGBoost",
+    "vectorizer_name": "word_tfidf",
+    "validation_macro_f1": 0.9504171355904653,
+    "validation_weighted_f1": 0.9498245368742534,
+    "test_accuracy": 0.978448275862069,
+    "test_macro_f1": 0.9783055637375668,
+    "test_weighted_f1": 0.9783831775424849
+  },
+  "all_model_results": [
+    {
+      "model_name": "Logistic Regression",
+      "vectorizer_name": "word_tfidf",
+      "validation_macro_f1": 0.9015383858292975,
+      "validation_weighted_f1": 0.9005202285086424
+    },
+    {
+      "model_name": "Linear SVM",
+      "vectorizer_name": "word_tfidf",
+      "validation_macro_f1": 0.918038597482837,
+      "validation_weighted_f1": 0.917064228172225
+    },
+    {
+      "model_name": "Complement Naive Bayes",
+      "vectorizer_name": "word_tfidf",
+      "validation_macro_f1": 0.8655157050015182,
+      "validation_weighted_f1": 0.8645626255518781
+    },
+    {
+      "model_name": "Random Forest",
+      "vectorizer_name": "word_tfidf",
+      "validation_macro_f1": 0.9196333447692298,
+      "validation_weighted_f1": 0.9187103567873648
+    },
+    {
+      "model_name": "XGBoost",
+      "vectorizer_name": "word_tfidf",
+      "validation_macro_f1": 0.9504171355904653,
+      "validation_weighted_f1": 0.9498245368742534
+    }
+  ],
+  "labels": [
+    "business-development",
+    "finance",
+    "hr",
+    "information-technology",
+    "sales"
+  ],
+  "dataset_rows": 1167,
+  "train_rows": 935,
+  "test_rows": 232,
+  "split_strategy": {
+    "holdout": "First fold of 5-fold StratifiedGroupKFold (approximately 20%), random_state=42.",
+    "model_selection": "3-fold StratifiedGroupKFold applied only to the remaining training partition.",
+    "grouping": "Connected components joining shared job_id values and stateless character-hash cosine similarity >= threshold.",
+    "similarity_vectorizer": "HashingVectorizer (char_wb, n-grams 3-5, 2^18 features)",
+    "similarity_threshold": 0.95
+  },
+  "leakage_group_count": 1117,
+  "near_duplicate_groups": 37,
+  "near_duplicate_rows": 87
+}

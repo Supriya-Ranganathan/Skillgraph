@@ -1,0 +1,34 @@
+{
+  "architecture": "two-layer heterogeneous GraphSAGE",
+  "num_jobs": 1167,
+  "num_skills": 4984,
+  "hidden_dim": 32,
+  "dropout": 0.1,
+  "edge_scorer": "learned diagonal bilinear score",
+  "initial_node_features": "trainable job/skill ID embeddings; no category/title inputs",
+  "edge_types": [
+    [
+      "job",
+      "requires",
+      "skill"
+    ],
+    [
+      "skill",
+      "required_by",
+      "job"
+    ]
+  ],
+  "seed": 43,
+  "device": "cpu",
+  "max_epochs": 60,
+  "early_stopping_patience": 8,
+  "learning_rate": 0.005,
+  "weight_decay": 0.0001,
+  "negative_sampling_ratio": 1.0,
+  "negative_sampling_seed_base": 8100,
+  "message_passing_edges": 16222,
+  "validation_edges": 2305,
+  "test_edges": 2306,
+  "node_mapping_reference": "data/processed/heterogeneous_skill_graph_mappings.json",
+  "training_graph_reference": "data/processed/graph_baseline_training_graph.npz"
+}

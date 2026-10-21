@@ -1,0 +1,90 @@
+{
+  "errors": [],
+  "inputs": {
+    "edges": "C:\\Users\\HP\\Desktop\\SkillGraph-X-Starter\\SkillGraph-X\\data\\processed\\job_skill_edges.csv",
+    "jobs": "C:\\Users\\HP\\Desktop\\SkillGraph-X-Starter\\SkillGraph-X\\data\\processed\\cleaned_jobs.csv"
+  },
+  "summary": {
+    "blank_job_ids": {
+      "edges": 0,
+      "jobs": 0
+    },
+    "blank_text_values": {
+      "edges": {
+        "category": 0,
+        "job_title": 0,
+        "skill": 0
+      },
+      "jobs": {
+        "category": 0,
+        "job_description": 0,
+        "job_skill_set": 0,
+        "job_title": 0,
+        "skills": 0
+      }
+    },
+    "duplicate_job_ids": 0,
+    "duplicate_job_skill_edges": 0,
+    "edge_columns": {
+      "category": "object",
+      "job_id": "int64",
+      "job_title": "object",
+      "skill": "object"
+    },
+    "edge_metadata_mismatch_rows": 0,
+    "edge_rows": 20833,
+    "expected_unique_edges": 20833,
+    "job_columns": {
+      "category": "object",
+      "job_description": "object",
+      "job_id": "int64",
+      "job_skill_set": "object",
+      "job_title": "object",
+      "skills": "object"
+    },
+    "job_id_type_errors": {
+      "edges": 0,
+      "jobs": 0
+    },
+    "job_rows": 1167,
+    "missing_edge_columns": [],
+    "missing_graph_edges": 0,
+    "missing_job_columns": [],
+    "missing_values": {
+      "edges": {
+        "category": 0,
+        "job_id": 0,
+        "job_title": 0,
+        "skill": 0
+      },
+      "jobs": {
+        "category": 0,
+        "job_description": 0,
+        "job_id": 0,
+        "job_skill_set": 0,
+        "job_title": 0,
+        "skills": 0
+      }
+    },
+    "text_type_errors": {
+      "edges": {
+        "category": 0,
+        "job_title": 0,
+        "skill": 0
+      },
+      "jobs": {
+        "category": 0,
+        "job_description": 0,
+        "job_skill_set": 0,
+        "job_title": 0,
+        "skills": 0
+      }
+    },
+    "unexpected_graph_edges": 0,
+    "unique_categories": 5,
+    "unique_jobs": 1167,
+    "unique_skills": 4984,
+    "unknown_edge_job_rows": 0
+  },
+  "valid": true
+}

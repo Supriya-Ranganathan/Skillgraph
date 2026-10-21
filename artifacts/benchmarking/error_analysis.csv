@@ -1,0 +1,10 @@
+Model,job_id,actual_skill_count,recommended_skill_count,correct_recommendations,irrelevant_recommendations,missed_relevant_skills,precision_at_10,recall_at_10,ndcg_at_10
+Frequency baseline,job_1,3,3,2,['Java'],['Pandas'],0.6666666666666666,0.6666666666666666,0.7039180890341347
+Frequency baseline,job_2,3,3,2,['Python'],['JavaScript'],0.6666666666666666,0.6666666666666666,0.5307212739772434
+Frequency baseline,job_3,3,3,2,['SQL'],['Machine Learning'],0.6666666666666666,0.6666666666666666,0.7039180890341347
+Skill co-occurrence,job_1,3,3,3,[],[],1.0,1.0,1.0
+Skill co-occurrence,job_2,3,3,3,[],[],1.0,1.0,1.0
+Skill co-occurrence,job_3,3,3,3,[],[],1.0,1.0,1.0
+GraphSAGE,job_1,3,3,1,"['C++', 'Java']","['Pandas', 'SQL']",0.3333333333333333,0.3333333333333333,0.46927872602275644
+GraphSAGE,job_2,3,3,2,['Python'],['JavaScript'],0.6666666666666666,0.6666666666666666,0.7653606369886217
+GraphSAGE,job_3,3,3,2,['SQL'],['Machine Learning'],0.6666666666666666,0.6666666666666666,0.7653606369886217

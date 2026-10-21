@@ -1,0 +1,1117 @@
+{
+  "experiment": "paired five-seed graph recommendation benchmark",
+  "seeds": [
+    43,
+    47,
+    53,
+    59,
+    61
+  ],
+  "data_source": "Existing heterogeneous graph and mappings; no artifacts regenerated.",
+  "protocol": {
+    "task": "Transductive held-out job-skill edge completion; not cold-start or temporal prediction.",
+    "split": "Per-job seeded edge holdout; validation and test held-out edges never enter message-passing adjacency or baseline statistics.",
+    "baselines": "Frequency counts and unweighted skill co-occurrence are computed from training edges only.",
+    "candidate_policy": "Training-visible skills only; exclude each job's training context and known non-test positives; all methods share the same filtered candidate sequence.",
+    "ranking_metrics": "Macro-averaged per test job; Precision@K divides by K, Recall@K by all held-out target skills, and binary NDCG@K uses the ideal ranking.",
+    "sampled_negative_metrics": "GraphSAGE ROC-AUC/AP are secondary 1:1 sampled-negative link-classification metrics, separate from full-candidate ranking results.",
+    "uncertainty": "Two-sided Student-t 95% interval across five seed-level macro scores (df=4, t*=2.776445); small n means intervals are approximate and describe seed/split variability.",
+    "limitations": [
+      "Transductive: test jobs contribute their training edges to the message-passing graph; this is not unseen-job generalization.",
+      "Skills absent from training are not candidates; held-out targets outside that vocabulary remain in the recall denominator.",
+      "Unobserved pairs can be undiscovered positives and are treated as negatives for sampled-negative metrics.",
+      "Per-job edge splits do not protect against semantically near-duplicate postings with different job IDs crossing partitions.",
+      "No temporal split or temporal prediction claim is made."
+    ]
+  },
+  "model_configuration": {
+    "architecture": "two-layer heterogeneous GraphSAGE with trainable job/skill ID embeddings",
+    "hidden_dim": 32,
+    "dropout": 0.1,
+    "learning_rate": 0.005,
+    "weight_decay": 0.0001,
+    "max_epochs": 60,
+    "early_stopping_patience": 8,
+    "device": "cpu",
+    "message_passing_edges": "training positive edges only"
+  },
+  "aggregate": {
+    "ranking_metrics": {
+      "frequency": {
+        "5": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": 0.08247000717171712,
+            "sample_standard_deviation": 0.0012982406079035471,
+            "ci95_lower": 0.08085802854787712,
+            "ci95_upper": 0.08408198579555713,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": 0.22188141876771367,
+            "sample_standard_deviation": 0.006098111553851367,
+            "ci95_lower": 0.214309613194266,
+            "ci95_upper": 0.22945322434116133,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": 0.21036751687487013,
+            "sample_standard_deviation": 0.004954018999426199,
+            "ci95_lower": 0.20421628983686516,
+            "ci95_upper": 0.2165187439128751,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        },
+        "10": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": 0.05500866617055333,
+            "sample_standard_deviation": 0.0006293412439441215,
+            "ci95_lower": 0.05422723580536314,
+            "ci95_upper": 0.05579009653574352,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": 0.29699601366638756,
+            "sample_standard_deviation": 0.004783758042269948,
+            "ci95_lower": 0.2910561935291832,
+            "ci95_upper": 0.3029358338035919,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": 0.23898645570136628,
+            "sample_standard_deviation": 0.004408985453643091,
+            "ci95_lower": 0.23351197719497355,
+            "ci95_upper": 0.24446093420775902,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        },
+        "20": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": 0.033499299340031666,
+            "sample_standard_deviation": 0.000499417518556701,
+            "ci95_lower": 0.032879190587167546,
+            "ci95_upper": 0.034119408092895785,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": 0.3595500148232966,
+            "sample_standard_deviation": 0.00724614730699903,
+            "ci95_lower": 0.35055273458651476,
+            "ci95_upper": 0.3685472950600785,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": 0.2577940689627396,
+            "sample_standard_deviation": 0.005123950772016635,
+            "ci95_lower": 0.25143184376055816,
+            "ci95_upper": 0.26415629416492103,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        }
+      },
+      "cooccurrence": {
+        "5": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": 0.08710152073836304,
+            "sample_standard_deviation": 0.0017409024854502218,
+            "ci95_lower": 0.08493990479779605,
+            "ci95_upper": 0.08926313667893003,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": 0.23534677500240403,
+            "sample_standard_deviation": 0.004675034559619456,
+            "ci95_lower": 0.22954195289936616,
+            "ci95_upper": 0.2411515971054419,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": 0.22196472668925876,
+            "sample_standard_deviation": 0.004032703907729991,
+            "ci95_lower": 0.2169574634316148,
+            "ci95_upper": 0.22697198994690274,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        },
+        "10": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": 0.05701542487735012,
+            "sample_standard_deviation": 0.0004680867499852005,
+            "ci95_lower": 0.056434218411857286,
+            "ci95_upper": 0.05759663134284295,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": 0.3067264138905268,
+            "sample_standard_deviation": 0.0025755817080004213,
+            "ci95_lower": 0.3035284068092705,
+            "ci95_upper": 0.3099244209717831,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": 0.24925233155938437,
+            "sample_standard_deviation": 0.003333200130911392,
+            "ci95_lower": 0.2451136169580236,
+            "ci95_upper": 0.25339104616074515,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        },
+        "20": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": 0.03529173066560541,
+            "sample_standard_deviation": 0.0005829444538008902,
+            "ci95_lower": 0.034567909524368286,
+            "ci95_upper": 0.03601555180684254,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": 0.37722609285524455,
+            "sample_standard_deviation": 0.008777029809267034,
+            "ci95_lower": 0.3663279709299164,
+            "ci95_upper": 0.3881242147805727,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": 0.27064711979335143,
+            "sample_standard_deviation": 0.005085648561645274,
+            "ci95_lower": 0.2643324530668397,
+            "ci95_upper": 0.27696178651986314,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        }
+      },
+      "graphsage": {
+        "5": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": 0.07917581315846942,
+            "sample_standard_deviation": 0.0019510363337023372,
+            "ci95_lower": 0.07675328158372376,
+            "ci95_upper": 0.08159834473321508,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": 0.2139545280765375,
+            "sample_standard_deviation": 0.00528144506110258,
+            "ci95_lower": 0.20739674788567533,
+            "ci95_upper": 0.22051230826739968,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": 0.1964374054661385,
+            "sample_standard_deviation": 0.010601682471891425,
+            "ci95_lower": 0.183273678020403,
+            "ci95_upper": 0.209601132911874,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        },
+        "10": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": 0.05075473171706104,
+            "sample_standard_deviation": 0.0016548584238812443,
+            "ci95_lower": 0.048699953590003474,
+            "ci95_upper": 0.052809509844118606,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": 0.2726867795227257,
+            "sample_standard_deviation": 0.008992606041629604,
+            "ci95_lower": 0.2615209843508045,
+            "ci95_upper": 0.28385257469464686,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": 0.21895210561450895,
+            "sample_standard_deviation": 0.010226225394630509,
+            "ci95_lower": 0.20625456970447914,
+            "ci95_upper": 0.23164964152453876,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        },
+        "20": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": 0.03154370440792194,
+            "sample_standard_deviation": 0.0005682633477026305,
+            "ci95_lower": 0.030838112267580833,
+            "ci95_upper": 0.03224929654826304,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": 0.33906385270443545,
+            "sample_standard_deviation": 0.007304832158780705,
+            "ci95_lower": 0.32999370559995633,
+            "ci95_upper": 0.3481339998089146,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": 0.23872496392887768,
+            "sample_standard_deviation": 0.009648998962610459,
+            "ci95_lower": 0.22674414929829878,
+            "ci95_upper": 0.2507057785594566,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        }
+      }
+    },
+    "paired_macro_differences": {
+      "frequency": {
+        "5": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": -0.0032941940132476893,
+            "sample_standard_deviation": 0.0020289241996154527,
+            "ci95_lower": -0.005813436146994589,
+            "ci95_upper": -0.0007749518795007893,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": -0.007926890691176216,
+            "sample_standard_deviation": 0.006706486470992764,
+            "ci95_lower": -0.01625409349664856,
+            "ci95_upper": 0.000400312114296128,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": -0.013930111408731492,
+            "sample_standard_deviation": 0.013455093995418457,
+            "ci95_lower": -0.030636817215290265,
+            "ci95_upper": 0.002776594397827282,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        },
+        "10": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": -0.004253934453492254,
+            "sample_standard_deviation": 0.0020465991942377176,
+            "ci95_lower": -0.006795122991730065,
+            "ci95_upper": -0.0017127459152544429,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": -0.024309234143662,
+            "sample_standard_deviation": 0.011886069761964163,
+            "ci95_lower": -0.03906773904723131,
+            "ci95_upper": -0.009550729240092688,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": -0.020034350086857167,
+            "sample_standard_deviation": 0.01288113207250804,
+            "ci95_lower": -0.03602838803739827,
+            "ci95_upper": -0.004040312136316063,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        },
+        "20": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": -0.001955594932109792,
+            "sample_standard_deviation": 0.0005098463972613159,
+            "ci95_lower": -0.0025886528482030632,
+            "ci95_upper": -0.0013225370160165205,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": -0.020486162118861166,
+            "sample_standard_deviation": 0.006512535267226184,
+            "ci95_lower": -0.028572542697208263,
+            "ci95_upper": -0.012399781540514068,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": -0.019069105033862003,
+            "sample_standard_deviation": 0.0125070611696963,
+            "ci95_lower": -0.034598672611606186,
+            "ci95_upper": -0.0035395374561178177,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        }
+      },
+      "cooccurrence": {
+        "5": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": -0.007925707579893538,
+            "sample_standard_deviation": 0.002561756877643799,
+            "ci95_lower": -0.011106548867014735,
+            "ci95_upper": -0.0047448662927723415,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": -0.021392246925866727,
+            "sample_standard_deviation": 0.006461609262230383,
+            "ci95_lower": -0.029415394517238194,
+            "ci95_upper": -0.01336909933449526,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": -0.025527321223120042,
+            "sample_standard_deviation": 0.012714955636741703,
+            "ci95_lower": -0.04131502387602026,
+            "ci95_upper": -0.009739618570219821,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        },
+        "10": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": -0.006260693160289115,
+            "sample_standard_deviation": 0.0019060274750619353,
+            "ci95_lower": -0.008627338855660747,
+            "ci95_upper": -0.003894047464917482,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": -0.0340396343678012,
+            "sample_standard_deviation": 0.010122782723167726,
+            "ci95_lower": -0.04660872923679765,
+            "ci95_upper": -0.021470539498804748,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": -0.030300225944875324,
+            "sample_standard_deviation": 0.011800320146752806,
+            "ci95_lower": -0.04495225863837687,
+            "ci95_upper": -0.01564819325137378,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        },
+        "20": {
+          "precision": {
+            "n_seeds": 5,
+            "mean": -0.0037480262576835817,
+            "sample_standard_deviation": 0.0005462425487384552,
+            "ci95_lower": -0.004426275964739188,
+            "ci95_upper": -0.0030697765506279757,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "recall": {
+            "n_seeds": 5,
+            "mean": -0.038162240150809115,
+            "sample_standard_deviation": 0.0074470143658306506,
+            "ci95_lower": -0.04740892978296729,
+            "ci95_upper": -0.028915550518650943,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          },
+          "ndcg": {
+            "n_seeds": 5,
+            "mean": -0.031922155864473944,
+            "sample_standard_deviation": 0.012399065938023975,
+            "ci95_lower": -0.04731762965107293,
+            "ci95_upper": -0.01652668207787496,
+            "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+          }
+        }
+      }
+    },
+    "sampled_negative_test_metrics": {
+      "roc_auc": {
+        "n_seeds": 5,
+        "mean": 0.7885351106485785,
+        "sample_standard_deviation": 0.00757475396345493,
+        "ci95_lower": 0.7791298113569052,
+        "ci95_upper": 0.7979404099402518,
+        "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+      },
+      "average_precision": {
+        "n_seeds": 5,
+        "mean": 0.8643984131418246,
+        "sample_standard_deviation": 0.00783435941708745,
+        "ci95_lower": 0.8546707711046385,
+        "ci95_upper": 0.8741260551790108,
+        "method": "Two-sided Student-t 95% interval across five seed-level values (df=4, t*=2.776445)."
+      }
+    }
+  },
+  "per_seed": [
+    {
+      "seed": 43,
+      "split": {
+        "seed": 43,
+        "method": "Per-job random edge split; each job with at least two edges retains at least one training edge.",
+        "edge_holdout_fraction_per_job": 0.2,
+        "validation_fraction_of_heldout_edges": 0.5,
+        "training_positive_edges": 16222,
+        "validation_positive_edges": 2373,
+        "test_positive_edges": 2238,
+        "training_message_passing_edges": 16222,
+        "validation_test_edges_in_message_passing": 0,
+        "training_jobs": 1167,
+        "validation_jobs": 1166,
+        "test_jobs": 1166,
+        "jobs_with_one_skill_training_only": 0,
+        "candidate_vocabulary_size": 4129,
+        "candidate_count_min": 4091,
+        "candidate_count_max": 4125,
+        "candidate_set_parity": "The same filtered per-job candidate sequence is passed to frequency, co-occurrence, and GraphSAGE."
+      },
+      "negative_sampling": {
+        "ratio": "1:1 negatives to positives in train, validation, and test.",
+        "seed_base": 8530,
+        "known_positive_pairs_excluded": 20833,
+        "negative_pools_disjoint": true,
+        "unobserved_pair_caveat": "An unobserved job-skill pair may be a true but undiscovered relationship."
+      },
+      "validation_checkpoint_selection": "Highest validation average precision; ROC-AUC is the deterministic tie-breaker.",
+      "validation_metrics": {
+        "best_epoch": 33,
+        "epochs_run": 41,
+        "validation_roc_auc": 0.7914217557438304,
+        "validation_average_precision": 0.8679612015756654,
+        "training_loss_at_selected_epoch": 0.5120034217834473
+      },
+      "sampled_negative_test_metrics": {
+        "roc_auc": 0.7894741570772449,
+        "average_precision": 0.870707348198866
+      },
+      "ranking_metrics": {
+        "frequency": {
+          "5": {
+            "precision": 0.08439108061749633,
+            "recall": 0.23211835334476846,
+            "ndcg": 0.21827062477515966
+          },
+          "10": {
+            "precision": 0.05514579759862825,
+            "recall": 0.299828473413379,
+            "ndcg": 0.2445070904092303
+          },
+          "20": {
+            "precision": 0.034005145797598654,
+            "recall": 0.36946826758147494,
+            "ndcg": 0.2650135771916458
+          }
+        },
+        "cooccurrence": {
+          "5": {
+            "precision": 0.08885077186964045,
+            "recall": 0.24305317324185247,
+            "ndcg": 0.22628725590125887
+          },
+          "10": {
+            "precision": 0.056946826758147905,
+            "recall": 0.30843339050886215,
+            "ndcg": 0.2514903781173748
+          },
+          "20": {
+            "precision": 0.035806174957118325,
+            "recall": 0.3873642081189248,
+            "ndcg": 0.27521269345306315
+          }
+        },
+        "graphsage": {
+          "5": {
+            "precision": 0.0799313893653522,
+            "recall": 0.21882504288164692,
+            "ndcg": 0.1898698573026823
+          },
+          "10": {
+            "precision": 0.05274442538593526,
+            "recall": 0.2839622641509434,
+            "ndcg": 0.21491410949111517
+          },
+          "20": {
+            "precision": 0.032504288164665586,
+            "recall": 0.3503144654088047,
+            "ndcg": 0.2345047614813332
+          }
+        }
+      },
+      "paired_macro_differences": {
+        "frequency": {
+          "5": {
+            "precision": -0.004459691252144084,
+            "recall": -0.013293310463121783,
+            "ndcg": -0.028400767472477065
+          },
+          "10": {
+            "precision": -0.0024013722126929684,
+            "recall": -0.01586620926243568,
+            "ndcg": -0.02959298091811461
+          },
+          "20": {
+            "precision": -0.0015008576329331054,
+            "recall": -0.019153802172670095,
+            "ndcg": -0.030508815710312186
+          }
+        },
+        "cooccurrence": {
+          "5": {
+            "precision": -0.008919382504288162,
+            "recall": -0.024228130360205827,
+            "ndcg": -0.0364173985985761
+          },
+          "10": {
+            "precision": -0.004202401372212692,
+            "recall": -0.0244711263579188,
+            "ndcg": -0.0365762686262591
+          },
+          "20": {
+            "precision": -0.0033018867924528264,
+            "recall": -0.03704974271012007,
+            "ndcg": -0.04070793197172978
+          }
+        }
+      }
+    },
+    {
+      "seed": 47,
+      "split": {
+        "seed": 47,
+        "method": "Per-job random edge split; each job with at least two edges retains at least one training edge.",
+        "edge_holdout_fraction_per_job": 0.2,
+        "validation_fraction_of_heldout_edges": 0.5,
+        "training_positive_edges": 16222,
+        "validation_positive_edges": 2373,
+        "test_positive_edges": 2238,
+        "training_message_passing_edges": 16222,
+        "validation_test_edges_in_message_passing": 0,
+        "training_jobs": 1167,
+        "validation_jobs": 1166,
+        "test_jobs": 1166,
+        "jobs_with_one_skill_training_only": 0,
+        "candidate_vocabulary_size": 4156,
+        "candidate_count_min": 4118,
+        "candidate_count_max": 4152,
+        "candidate_set_parity": "The same filtered per-job candidate sequence is passed to frequency, co-occurrence, and GraphSAGE."
+      },
+      "negative_sampling": {
+        "ratio": "1:1 negatives to positives in train, validation, and test.",
+        "seed_base": 8570,
+        "known_positive_pairs_excluded": 20833,
+        "negative_pools_disjoint": true,
+        "unobserved_pair_caveat": "An unobserved job-skill pair may be a true but undiscovered relationship."
+      },
+      "validation_checkpoint_selection": "Highest validation average precision; ROC-AUC is the deterministic tie-breaker.",
+      "validation_metrics": {
+        "best_epoch": 52,
+        "epochs_run": 60,
+        "validation_roc_auc": 0.7963577108604687,
+        "validation_average_precision": 0.8717964106975268,
+        "training_loss_at_selected_epoch": 0.4731997549533844
+      },
+      "sampled_negative_test_metrics": {
+        "roc_auc": 0.779812260563937,
+        "average_precision": 0.8617192067748124
+      },
+      "ranking_metrics": {
+        "frequency": {
+          "5": {
+            "precision": 0.0809605488850778,
+            "recall": 0.21718124642652967,
+            "ndcg": 0.20488722381840035
+          },
+          "10": {
+            "precision": 0.05394511149228176,
+            "recall": 0.28913664951400786,
+            "ndcg": 0.23256435781753812
+          },
+          "20": {
+            "precision": 0.03293310463121792,
+            "recall": 0.35188679245282994,
+            "ndcg": 0.25153270310380205
+          }
+        },
+        "cooccurrence": {
+          "5": {
+            "precision": 0.08627787307032657,
+            "recall": 0.23290451686678115,
+            "ndcg": 0.21831506787558572
+          },
+          "10": {
+            "precision": 0.05634648370497468,
+            "recall": 0.3022870211549455,
+            "ndcg": 0.2447611323922035
+          },
+          "20": {
+            "precision": 0.034433962264150984,
+            "recall": 0.36546598056032,
+            "ndcg": 0.2642557477638556
+          }
+        },
+        "graphsage": {
+          "5": {
+            "precision": 0.07890222984562668,
+            "recall": 0.212492853058891,
+            "ndcg": 0.19974697477422318
+          },
+          "10": {
+            "precision": 0.05214408233276202,
+            "recall": 0.28027444253859335,
+            "ndcg": 0.22566813392244647
+          },
+          "20": {
+            "precision": 0.031132075471698228,
+            "recall": 0.3321612349914234,
+            "ndcg": 0.24131705509368198
+          }
+        }
+      },
+      "paired_macro_differences": {
+        "frequency": {
+          "5": {
+            "precision": -0.002058319039451115,
+            "recall": -0.00468839336763865,
+            "ndcg": -0.005140249044177113
+          },
+          "10": {
+            "precision": -0.001801029159519726,
+            "recall": -0.008862206975414523,
+            "ndcg": -0.006896223895091602
+          },
+          "20": {
+            "precision": -0.001801029159519726,
+            "recall": -0.019725557461406515,
+            "ndcg": -0.010215648010120083
+          }
+        },
+        "cooccurrence": {
+          "5": {
+            "precision": -0.007375643224699829,
+            "recall": -0.020411663807890223,
+            "ndcg": -0.018568093101362346
+          },
+          "10": {
+            "precision": -0.004202401372212692,
+            "recall": -0.022012578616352196,
+            "ndcg": -0.019092998469756987
+          },
+          "20": {
+            "precision": -0.0033018867924528273,
+            "recall": -0.0333047455688965,
+            "ndcg": -0.022938692670173778
+          }
+        }
+      }
+    },
+    {
+      "seed": 53,
+      "split": {
+        "seed": 53,
+        "method": "Per-job random edge split; each job with at least two edges retains at least one training edge.",
+        "edge_holdout_fraction_per_job": 0.2,
+        "validation_fraction_of_heldout_edges": 0.5,
+        "training_positive_edges": 16222,
+        "validation_positive_edges": 2373,
+        "test_positive_edges": 2238,
+        "training_message_passing_edges": 16222,
+        "validation_test_edges_in_message_passing": 0,
+        "training_jobs": 1167,
+        "validation_jobs": 1166,
+        "test_jobs": 1166,
+        "jobs_with_one_skill_training_only": 0,
+        "candidate_vocabulary_size": 4128,
+        "candidate_count_min": 4090,
+        "candidate_count_max": 4124,
+        "candidate_set_parity": "The same filtered per-job candidate sequence is passed to frequency, co-occurrence, and GraphSAGE."
+      },
+      "negative_sampling": {
+        "ratio": "1:1 negatives to positives in train, validation, and test.",
+        "seed_base": 8630,
+        "known_positive_pairs_excluded": 20833,
+        "negative_pools_disjoint": true,
+        "unobserved_pair_caveat": "An unobserved job-skill pair may be a true but undiscovered relationship."
+      },
+      "validation_checkpoint_selection": "Highest validation average precision; ROC-AUC is the deterministic tie-breaker.",
+      "validation_metrics": {
+        "best_epoch": 37,
+        "epochs_run": 45,
+        "validation_roc_auc": 0.7786951781783014,
+        "validation_average_precision": 0.8546336595994454,
+        "training_loss_at_selected_epoch": 0.5131000280380249
+      },
+      "sampled_negative_test_metrics": {
+        "roc_auc": 0.7833100136484047,
+        "average_precision": 0.8554918050028121
+      },
+      "ranking_metrics": {
+        "frequency": {
+          "5": {
+            "precision": 0.08164665523156152,
+            "recall": 0.2225700400228704,
+            "ndcg": 0.20915412130593383
+          },
+          "10": {
+            "precision": 0.05523156089193873,
+            "recall": 0.30090051457975964,
+            "ndcg": 0.23897811859136409
+          },
+          "20": {
+            "precision": 0.03349056603773587,
+            "recall": 0.35996283590623174,
+            "ndcg": 0.2568716634191555
+          }
+        },
+        "cooccurrence": {
+          "5": {
+            "precision": 0.08473413379073823,
+            "recall": 0.23393367638650675,
+            "ndcg": 0.2196652673531435
+          },
+          "10": {
+            "precision": 0.05686106346483747,
+            "recall": 0.3077615780445967,
+            "ndcg": 0.24841436956730117
+          },
+          "20": {
+            "precision": 0.03533447684391078,
+            "recall": 0.37714408233276114,
+            "ndcg": 0.26965373072777127
+          }
+        },
+        "graphsage": {
+          "5": {
+            "precision": 0.0778730703259011,
+            "recall": 0.20991995425957716,
+            "ndcg": 0.18494884849544124
+          },
+          "10": {
+            "precision": 0.04871355060034346,
+            "recall": 0.26309319611206405,
+            "ndcg": 0.2050166968144795
+          },
+          "20": {
+            "precision": 0.031132075471698228,
+            "recall": 0.33620640365923365,
+            "ndcg": 0.22679473335053216
+          }
+        }
+      },
+      "paired_macro_differences": {
+        "frequency": {
+          "5": {
+            "precision": -0.003773584905660378,
+            "recall": -0.012650085763293309,
+            "ndcg": -0.024205272810492257
+          },
+          "10": {
+            "precision": -0.006518010291595188,
+            "recall": -0.037807318467695826,
+            "ndcg": -0.03396142177688434
+          },
+          "20": {
+            "precision": -0.0023584905660377345,
+            "recall": -0.02375643224699828,
+            "ndcg": -0.030076930068623706
+          }
+        },
+        "cooccurrence": {
+          "5": {
+            "precision": -0.006861063464837053,
+            "recall": -0.02401372212692967,
+            "ndcg": -0.034716418857701874
+          },
+          "10": {
+            "precision": -0.008147512864493982,
+            "recall": -0.04466838193253289,
+            "ndcg": -0.043397672752821775
+          },
+          "20": {
+            "precision": -0.004202401372212687,
+            "recall": -0.040937678673527746,
+            "ndcg": -0.04285899737723967
+          }
+        }
+      }
+    },
+    {
+      "seed": 59,
+      "split": {
+        "seed": 59,
+        "method": "Per-job random edge split; each job with at least two edges retains at least one training edge.",
+        "edge_holdout_fraction_per_job": 0.2,
+        "validation_fraction_of_heldout_edges": 0.5,
+        "training_positive_edges": 16222,
+        "validation_positive_edges": 2374,
+        "test_positive_edges": 2237,
+        "training_message_passing_edges": 16222,
+        "validation_test_edges_in_message_passing": 0,
+        "training_jobs": 1167,
+        "validation_jobs": 1167,
+        "test_jobs": 1165,
+        "jobs_with_one_skill_training_only": 0,
+        "candidate_vocabulary_size": 4166,
+        "candidate_count_min": 4128,
+        "candidate_count_max": 4161,
+        "candidate_set_parity": "The same filtered per-job candidate sequence is passed to frequency, co-occurrence, and GraphSAGE."
+      },
+      "negative_sampling": {
+        "ratio": "1:1 negatives to positives in train, validation, and test.",
+        "seed_base": 8690,
+        "known_positive_pairs_excluded": 20833,
+        "negative_pools_disjoint": true,
+        "unobserved_pair_caveat": "An unobserved job-skill pair may be a true but undiscovered relationship."
+      },
+      "validation_checkpoint_selection": "Highest validation average precision; ROC-AUC is the deterministic tie-breaker.",
+      "validation_metrics": {
+        "best_epoch": 35,
+        "epochs_run": 43,
+        "validation_roc_auc": 0.8001785348009786,
+        "validation_average_precision": 0.8762595400397692,
+        "training_loss_at_selected_epoch": 0.5105155110359192
+      },
+      "sampled_negative_test_metrics": {
+        "roc_auc": 0.7995462383464668,
+        "average_precision": 0.874292111121263
+      },
+      "ranking_metrics": {
+        "frequency": {
+          "5": {
+            "precision": 0.08274678111588044,
+            "recall": 0.21977110157367685,
+            "ndcg": 0.2110805352481252
+          },
+          "10": {
+            "precision": 0.05562231759656696,
+            "recall": 0.29927038626609404,
+            "ndcg": 0.24111794827052635
+          },
+          "20": {
+            "precision": 0.03399141630901287,
+            "recall": 0.36317596566523574,
+            "ndcg": 0.26031017115141625
+          }
+        },
+        "cooccurrence": {
+          "5": {
+            "precision": 0.08875536480686765,
+            "recall": 0.23593705293276115,
+            "ndcg": 0.22641368656906133
+          },
+          "10": {
+            "precision": 0.05742489270386303,
+            "recall": 0.3067381974248925,
+            "ndcg": 0.25342291219863483
+          },
+          "20": {
+            "precision": 0.03583690987124458,
+            "recall": 0.38380543633762476,
+            "ndcg": 0.2763462621571683
+          }
+        },
+        "graphsage": {
+          "5": {
+            "precision": 0.0770815450643782,
+            "recall": 0.20838340486409176,
+            "ndcg": 0.19501352479707018
+          },
+          "10": {
+            "precision": 0.05012875536480728,
+            "recall": 0.26668097281831177,
+            "ndcg": 0.21753336844175875
+          },
+          "20": {
+            "precision": 0.031373390557940035,
+            "recall": 0.33444921316165926,
+            "ndcg": 0.23796626513537425
+          }
+        }
+      },
+      "paired_macro_differences": {
+        "frequency": {
+          "5": {
+            "precision": -0.005665236051502149,
+            "recall": -0.011387696709585124,
+            "ndcg": -0.016067010451054988
+          },
+          "10": {
+            "precision": -0.005493562231759651,
+            "recall": -0.03258941344778256,
+            "ndcg": -0.023584579828767466
+          },
+          "20": {
+            "precision": -0.002618025751072959,
+            "recall": -0.028726752503576546,
+            "ndcg": -0.022343906016042563
+          }
+        },
+        "cooccurrence": {
+          "5": {
+            "precision": -0.011673819742489261,
+            "recall": -0.027553648068669518,
+            "ndcg": -0.03140016177199116
+          },
+          "10": {
+            "precision": -0.007296137339055784,
+            "recall": -0.040057224606580843,
+            "ndcg": -0.03588954375687605
+          },
+          "20": {
+            "precision": -0.004463519313304713,
+            "recall": -0.049356223175965684,
+            "ndcg": -0.03837999702179427
+          }
+        }
+      }
+    },
+    {
+      "seed": 61,
+      "split": {
+        "seed": 61,
+        "method": "Per-job random edge split; each job with at least two edges retains at least one training edge.",
+        "edge_holdout_fraction_per_job": 0.2,
+        "validation_fraction_of_heldout_edges": 0.5,
+        "training_positive_edges": 16222,
+        "validation_positive_edges": 2372,
+        "test_positive_edges": 2239,
+        "training_message_passing_edges": 16222,
+        "validation_test_edges_in_message_passing": 0,
+        "training_jobs": 1167,
+        "validation_jobs": 1165,
+        "test_jobs": 1167,
+        "jobs_with_one_skill_training_only": 0,
+        "candidate_vocabulary_size": 4202,
+        "candidate_count_min": 4165,
+        "candidate_count_max": 4198,
+        "candidate_set_parity": "The same filtered per-job candidate sequence is passed to frequency, co-occurrence, and GraphSAGE."
+      },
+      "negative_sampling": {
+        "ratio": "1:1 negatives to positives in train, validation, and test.",
+        "seed_base": 8710,
+        "known_positive_pairs_excluded": 20833,
+        "negative_pools_disjoint": true,
+        "unobserved_pair_caveat": "An unobserved job-skill pair may be a true but undiscovered relationship."
+      },
+      "validation_checkpoint_selection": "Highest validation average precision; ROC-AUC is the deterministic tie-breaker.",
+      "validation_metrics": {
+        "best_epoch": 38,
+        "epochs_run": 46,
+        "validation_roc_auc": 0.7804849437933848,
+        "validation_average_precision": 0.8541048599392612,
+        "training_loss_at_selected_epoch": 0.5115771293640137
+      },
+      "sampled_negative_test_metrics": {
+        "roc_auc": 0.7905328836068389,
+        "average_precision": 0.8597815946113694
+      },
+      "ranking_metrics": {
+        "frequency": {
+          "5": {
+            "precision": 0.08260497000856958,
+            "recall": 0.21776635247072282,
+            "ndcg": 0.20844507922673172
+          },
+          "10": {
+            "precision": 0.055098543273350946,
+            "recall": 0.29584404455869723,
+            "ndcg": 0.2377647634181727
+          },
+          "20": {
+            "precision": 0.03307626392459302,
+            "recall": 0.3532562125107109,
+            "ndcg": 0.2552422299476785
+          }
+        },
+        "cooccurrence": {
+          "5": {
+            "precision": 0.0868894601542423,
+            "recall": 0.2309054555841188,
+            "ndcg": 0.21914235574724442
+          },
+          "10": {
+            "precision": 0.05749785775492752,
+            "recall": 0.30841188231933714,
+            "ndcg": 0.2481728655214076
+          },
+          "20": {
+            "precision": 0.03504712939160239,
+            "recall": 0.37235075692659214,
+            "ndcg": 0.2677671648648991
+          }
+        },
+        "graphsage": {
+          "5": {
+            "precision": 0.08209083119108888,
+            "recall": 0.2201513853184807,
+            "ndcg": 0.21260782196127564
+          },
+          "10": {
+            "precision": 0.05004284490145715,
+            "recall": 0.26942302199371587,
+            "ndcg": 0.23162821940274472
+          },
+          "20": {
+            "precision": 0.0315766923736076,
+            "recall": 0.34218794630105626,
+            "ndcg": 0.2530420045834669
+          }
+        }
+      },
+      "paired_macro_differences": {
+        "frequency": {
+          "5": {
+            "precision": -0.0005141388174807199,
+            "recall": 0.002385032847757784,
+            "ndcg": 0.004162742734543968
+          },
+          "10": {
+            "precision": -0.005055698371893741,
+            "recall": -0.026421022564981425,
+            "ndcg": -0.006136544015427818
+          },
+          "20": {
+            "precision": -0.0014995715509854336,
+            "recall": -0.011068266209654388,
+            "ndcg": -0.002200225364211465
+          }
+        },
+        "cooccurrence": {
+          "5": {
+            "precision": -0.004798628963153387,
+            "recall": -0.010754070265638389,
+            "ndcg": -0.006534533785968724
+          },
+          "10": {
+            "precision": -0.007455012853470426,
+            "recall": -0.038988860325621266,
+            "ndcg": -0.01654464611866273
+          },
+          "20": {
+            "precision": -0.0034704370179948533,
+            "recall": -0.03016281062553556,
+            "ndcg": -0.014725160281432234
+          }
+        }
+      }
+    }
+  ],
+  "per_job_differences_csv": "models\\paired_graph_benchmark_per_job_differences.csv",
+  "split_arrays_npz": "models\\paired_graph_benchmark_splits.npz",
+  "mapping_reference": "data/processed/heterogeneous_skill_graph_mappings.json"
+}

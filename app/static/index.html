@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FFFCFA">
+  <title>SkillGraph-X | Workforce Intelligence</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <button class="nav-scrim" id="nav-scrim" type="button" aria-label="Close navigation" hidden></button>
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#" data-open-view="overview" aria-label="SkillGraph-X overview">
+      <svg class="brand-symbol" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M8 8 24 16 8 24M8 8v16M24 16" />
+        <circle cx="8" cy="8" r="3" /><circle cx="8" cy="24" r="3" /><circle cx="24" cy="16" r="3" />
+      </svg>
+      <span>SkillGraph<span class="brand-accent">-X</span><small>ANALYTICS WORKBENCH</small></span>
+    </a>
+
+    <div class="nav-label">WORKSPACE</div>
+    <nav class="nav-list" id="primary-nav" aria-label="Primary navigation">
+      <button class="nav-item active" type="button" data-view="overview" data-title="Overview" data-description="Dataset structure and current evaluation at a glance." aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="5"/><rect x="13" y="10" width="8" height="11"/><rect x="3" y="13" width="8" height="8"/></svg><span>Overview</span>
+      </button>
+      <button class="nav-item" type="button" data-view="skillmap" data-title="Skill Graph" data-description="Explore the sampled job-skill network returned by the dataset API.">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="m8 7 8 0M7.5 8l3.5 7M16.5 8 13 15"/></svg><span>Skill Graph</span>
+      </button>
+      <button class="nav-item" type="button" data-view="intelligence" data-title="Skill Intelligence" data-description="Profiles, overlap, sampled relationships, and a local skill plan.">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3M12 18v3M4.8 4.8 7 7M17 17l2.2 2.2M3 12h3M18 12h3M4.8 19.2 7 17M17 7l2.2-2.2"/><circle cx="12" cy="12" r="5"/></svg><span>Skill Intelligence</span>
+      </button>
+      <button class="nav-item" type="button" data-view="skillgaps" data-title="Skill Gaps" data-description="Compare a skill profile with observed requirements for a selected role.">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M5 12h14M5 19h8"/><circle cx="3" cy="5" r=".5"/><circle cx="3" cy="12" r=".5"/><circle cx="3" cy="19" r=".5"/></svg><span>Skill Gaps</span>
+      </button>
+      <button class="nav-item" type="button" data-view="career" data-title="Career Paths" data-description="Ranked role routes inferred from overlapping dataset skill profiles.">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="18" r="2.5"/><circle cx="19" cy="6" r="2.5"/><path d="M7.5 18h3a4 4 0 0 0 4-4V10a4 4 0 0 1 4-4"/></svg><span>Career Paths</span>
+      </button>
+      <button class="nav-item" type="button" data-view="whatif" data-title="What-if Analysis" data-description="Compare role recommendations before and after skill changes.">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg><span>What-if Analysis</span>
+      </button>
+      <button class="nav-item" type="button" data-view="modellab" data-title="Model Evaluation" data-description="Saved classifier results and the protocol used to select the model.">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V4M4 20h17M8 16v-4M13 16V8M18 16V5"/></svg><span>Model Evaluation</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-bottom" id="sidebar-bottom">
+      <span class="status-dot" id="sidebar-status-dot" aria-hidden="true"></span>
+      <div><strong id="sidebar-status">Checking dataset</strong><small>Dataset-backed research prototype</small></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-toggle" id="nav-toggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="page-context"><div class="breadcrumb">SKILLGRAPH-X <span>/</span> <strong id="page-title">Overview</strong></div><p id="page-description">Dataset structure and current evaluation at a glance.</p></div>
+      <div class="dataset-state" id="dataset-state" data-state="loading" role="status" aria-live="polite"><span class="status-dot" aria-hidden="true"></span><span id="system-status">Checking API</span></div>
+      <button class="button button-secondary topbar-plan" type="button" data-open-view="intelligence" data-open-panel="plan">My plan <span aria-hidden="true">↗</span></button>
+    </header>
+
+    <div class="page-stack">
+      <section class="page" id="overview-view" data-page="overview" aria-labelledby="overview-heading">
+        <div class="page-heading"><div><p class="eyebrow">WORKSPACE</p><h1 id="overview-heading" tabindex="-1">Overview</h1></div><button class="button button-primary" type="button" data-open-view="skillmap">Open graph <span aria-hidden="true">→</span></button></div>
+
+        <div class="stat-strip" aria-label="Dataset summary">
+          <article class="stat-item"><span>Jobs</span><strong id="dataset-job-count">—</strong><small>Unique postings</small></article>
+          <article class="stat-item"><span>Skills</span><strong id="dataset-skill-count">—</strong><small>Normalized names</small></article>
+          <article class="stat-item"><span>Relationships</span><strong id="dataset-edge-count">—</strong><small>Unique job-skill edges</small></article>
+          <article class="stat-item"><span>Categories</span><strong id="dataset-category-count">—</strong><small>Available job categories</small></article>
+        </div>
+
+        <div class="overview-grid">
+          <article class="panel distribution-panel">
+            <div class="panel-heading"><div><h2>Skill distribution</h2><p>Top skills ranked by jobs containing each skill.</p></div><span class="panel-meta" id="skill-chart-count">Top dataset skills</span></div>
+            <p class="inline-state" id="top-skills-state" role="status" aria-live="polite">Loading skill counts…</p>
+            <div class="bar-chart" id="top-skills-list" aria-label="Top skills by job count"></div>
+            <div class="chart-axis" aria-hidden="true"><span>0</span><span id="skill-axis-mid">—</span><span id="skill-axis-max">— jobs</span></div>
+          </article>
+
+          <div class="overview-rail">
+            <article class="panel graph-summary-panel">
+              <div class="panel-heading"><div><h2>Graph footprint</h2><p>Full processed relationship totals.</p></div><span class="panel-symbol">G</span></div>
+              <div class="summary-pairs"><span>Job nodes</span><strong id="graph-summary-jobs">—</strong><span>Skill nodes</span><strong id="graph-summary-skills">—</strong><span>Observed links</span><strong id="graph-summary-edges">—</strong></div>
+              <p class="fine-print">The graph view is a bounded sample; these totals come from dataset statistics, not the displayed sample.</p>
+              <button class="text-button" type="button" data-open-view="skillmap">Explore network <span aria-hidden="true">→</span></button>
+            </article>
+            <article class="panel model-summary-panel">
+              <div class="panel-heading"><div><h2>Classifier snapshot</h2><p>Saved job-category evaluation.</p></div></div>
+              <p class="inline-state" id="overview-model-state" role="status" aria-live="polite">Loading model summary…</p>
+              <div id="overview-model-summary" hidden></div>
+              <button class="text-button" type="button" data-open-view="modellab">View evaluation <span aria-hidden="true">→</span></button>
+            </article>
+          </div>
+        </div>
+
+        <div class="overview-lower">
+          <article class="panel recent-panel">
+            <div class="panel-heading"><div><h2>Recent analysis</h2><p>Stored locally in this browser after you run an analysis.</p></div></div>
+            <div id="recent-analysis" class="recent-analysis empty-state">No analysis has been saved in this browser yet.</div>
+          </article>
+          <article class="panel pipeline-panel">
+            <div class="panel-heading"><div><h2>Evidence, not estimates</h2><p>Recommendation inputs are the current processed postings.</p></div></div>
+            <div class="pipeline-points"><span><b id="pipeline-job-total">—</b> postings</span><span><b id="pipeline-edge-total">—</b> observed relationships</span></div>
+            <p class="fine-print">Role gaps use a 20% observed-frequency threshold. Career routes use skill overlap; neither score predicts employment outcomes.</p>
+          </article>
+        </div>
+
+        <section class="workflow-row" aria-label="Analysis workflows">
+          <button class="workflow-link" type="button" data-open-view="skillgaps"><span class="workflow-index">01</span><span><strong>Skill gaps</strong><small>Role requirements vs. current skills</small></span><span aria-hidden="true">→</span></button>
+          <button class="workflow-link" type="button" data-open-view="career"><span class="workflow-index">02</span><span><strong>Career paths</strong><small>Ranked routes from skill overlap</small></span><span aria-hidden="true">→</span></button>
+          <button class="workflow-link" type="button" data-open-view="whatif"><span class="workflow-index">03</span><span><strong>What-if analysis</strong><small>Compare a changed skill profile</small></span><span aria-hidden="true">→</span></button>
+          <button class="workflow-link" type="button" data-open-view="intelligence"><span class="workflow-index">04</span><span><strong>Skill intelligence</strong><small>Explore profiles and overlap</small></span><span aria-hidden="true">→</span></button>
+        </section>
+      </section>
+
+      <section class="page hidden" id="skillmap-view" data-page="skillmap" aria-labelledby="graph-heading">
+        <div class="page-heading"><div><p class="eyebrow">RELATIONSHIP EXPLORER</p><h1 id="graph-heading" tabindex="-1">Skill Graph</h1><p class="page-lead">Observed job-skill edges from the processed dataset. This visualization is not a trained GNN.</p></div></div>
+        <article class="panel graph-workspace">
+          <div class="graph-toolbar">
+            <label class="field compact-field" for="graph-search">Search loaded nodes<input id="graph-search" type="search" placeholder="Search job title or skill" autocomplete="off"></label>
+            <label class="field compact-field" for="graph-type-filter">Node type<select id="graph-type-filter"><option value="all">All nodes</option><option value="skill">Skills</option><option value="job">Job postings</option></select></label>
+            <button class="button button-secondary" type="button" id="graph-reset">Reset view</button>
+          </div>
+          <p class="sample-note" id="skill-graph-status" role="status" aria-live="polite">Loading the graph sample…</p>
+          <div class="graph-workspace-grid">
+            <div class="graph-container" id="skill-graph-container"><svg id="skill-graph-svg" role="img" aria-label="Interactive sampled graph of job postings connected to observed skills"></svg></div>
+            <aside class="node-details" aria-labelledby="graph-detail-heading">
+              <div class="detail-header"><p class="eyebrow">SELECTION</p><h2 id="graph-detail-heading">Node details</h2></div>
+              <div id="graph-detail-empty" class="empty-state">Select or focus a node to inspect its dataset properties and connections.</div>
+              <div id="graph-detail-content" hidden>
+                <span class="type-badge" id="graph-node-type">—</span>
+                <h3 class="detail-node-label" id="graph-node-label">—</h3>
+                <dl class="detail-list" id="graph-node-properties"></dl>
+                <h3 class="detail-subheading">Connected nodes</h3>
+                <ul class="neighbor-list" id="graph-neighbors"></ul>
+              </div>
+              <p class="fine-print">Category filters are unavailable because category metadata is not included in the graph response.</p>
+            </aside>
+          </div>
+          <div class="graph-legend"><span><i class="legend-mark job-mark"></i> Job posting</span><span><i class="legend-mark skill-mark"></i> Skill</span><span class="panel-meta">Selected node and its neighbors are emphasized.</span></div>
+        </article>
+      </section>
+
+      <section class="page hidden" id="intelligence-view" data-page="intelligence" aria-labelledby="intelligence-heading">
+        <div class="page-heading"><div><p class="eyebrow">DATASET EXPLORATION</p><h1 id="intelligence-heading" tabindex="-1">Skill Intelligence</h1><p class="page-lead">Inspect observed role-skill patterns. Frequencies and overlaps describe this dataset, not labor-market forecasts.</p></div></div>
+        <div class="intel-tabs" role="tablist" aria-label="Skill intelligence views">
+          <button class="intel-tab active" type="button" role="tab" aria-selected="true" aria-controls="intel-profile" aria-label="Role profile" tabindex="0" data-intel-tab="profile">Role profile</button>
+          <button class="intel-tab" type="button" role="tab" aria-selected="false" aria-controls="intel-heatmap" aria-label="Skill overlap" tabindex="-1" data-intel-tab="heatmap">Skill overlap</button>
+          <button class="intel-tab" type="button" role="tab" aria-selected="false" aria-controls="intel-relations" aria-label="Relationships" tabindex="-1" data-intel-tab="relations">Relationships</button>
+          <button class="intel-tab" type="button" role="tab" aria-selected="false" aria-controls="intel-plan" aria-label="Personal plan" tabindex="-1" data-intel-tab="plan">Personal plan</button>
+          <button class="intel-tab" type="button" role="tab" aria-selected="false" aria-controls="intel-story" aria-label="Data story" tabindex="-1" data-intel-tab="story">Data story</button>
+        </div>
+
+        <section class="intel-panel" id="intel-profile" role="tabpanel" aria-labelledby="intelligence-heading" data-intel-panel="profile">
+          <article class="panel">
+            <div class="panel-toolbar"><div><h2>Skill intelligence profile</h2><p>Popular skills are those present in at least 20% of matching postings.</p></div><label class="field compact-field" for="profile-role">Dataset role<select id="profile-role" data-role-options data-placeholder="Select a dataset role"></select></label></div>
+            <p class="inline-state" id="profile-status" role="status" aria-live="polite">Select a role to load its profile.</p>
+            <div id="profile-content" class="profile-layout" hidden>
+              <div class="profile-summary" id="profile-summary"></div>
+              <section><div class="section-title-line"><h3>Observed skill fingerprint</h3><button class="button button-secondary" id="export-profile" type="button">Export profile</button></div><div id="profile-skills" class="fingerprint-list"></div></section>
+              <section><h3>Related dataset roles</h3><p class="fine-print">Ranked by Jaccard overlap of skills passing the same 20% role-frequency threshold; not a job-transition probability.</p><div id="profile-related" class="related-role-list"></div></section>
+            </div>
+          </article>
+        </section>
+
+        <section class="intel-panel hidden" id="intel-heatmap" role="tabpanel" data-intel-panel="heatmap" aria-label="Role and skill overlap heatmap">
+          <article class="panel">
+            <div class="panel-toolbar"><div><h2>Role-skill overlap</h2><p>Cells show the share of a category's matching postings that mention each popular skill.</p></div><div class="intel-controls"><label class="field" for="heatmap-category-filter">Filter roles<select id="heatmap-category-filter"><option value="all">All categories</option></select></label><label class="field" for="heatmap-search">Filter skills<input id="heatmap-search" type="search" placeholder="Find a skill" autocomplete="off"></label><label class="field" for="heatmap-sort">Sort rows<select id="heatmap-sort"><option value="alpha">Category A–Z</option><option value="coverage">Highest mean coverage</option></select></label></div></div>
+            <p class="inline-state" id="heatmap-status" role="status" aria-live="polite">Loading role-skill observations…</p>
+            <div class="heatmap-wrap" id="heatmap-wrap"><table class="heatmap-table" id="heatmap-table"></table></div>
+            <div class="heat-legend"><span>Below 20% threshold</span><span class="heat-swatch low"></span><span>20%</span><span class="heat-swatch mid"></span><span>60%</span><span class="heat-swatch high"></span><span>100%</span></div>
+            <p class="fine-print">Blank/zero cells mean the skill did not meet the endpoint's ≥20% recommendation threshold for that category, not that the skill never occurs.</p>
+          </article>
+        </section>
+
+        <section class="intel-panel hidden" id="intel-relations" role="tabpanel" data-intel-panel="relations" aria-label="Skill relationship explorer">
+          <article class="panel">
+            <div class="panel-toolbar"><div><h2>Skill relationships</h2><p>Shared-posting counts from the bounded graph sample.</p></div><label class="field compact-field" for="relation-skill">Selected skill<select id="relation-skill"><option value="">Loading skills…</option></select></label></div>
+            <p class="inline-state" id="relations-status" role="status" aria-live="polite">Waiting for a graph sample.</p>
+            <div class="relations-layout"><div id="relation-pairs" class="relation-pairs"></div><aside class="sample-callout"><strong>How to read this</strong><p>For the loaded sample, a pair count is the number of returned job nodes linked to both skills. It is co-occurrence, not causation, and is not a population estimate.</p><p id="relation-sample-size" class="fine-print">Sample size unavailable.</p></aside></div>
+          </article>
+        </section>
+
+        <section class="intel-panel hidden" id="intel-plan" role="tabpanel" data-intel-panel="plan" aria-label="Personal skill plan">
+          <article class="panel">
+            <div class="panel-toolbar"><div><h2>Personal skill plan</h2><p>Local browser checklist; no account, course, or certification claims.</p></div><div class="plan-actions"><button class="button button-secondary" id="export-plan-json" type="button">Export JSON</button><button class="button button-secondary" id="export-plan-csv" type="button">Export CSV</button><button class="button button-quiet" id="clear-plan" type="button">Clear plan</button></div></div>
+            <div class="plan-progress-line"><span id="plan-progress-label">0 of 0 goals completed</span><strong id="plan-progress-percent">0%</strong></div><progress id="plan-progress" max="100" value="0" aria-label="Personal plan completion"></progress>
+            <div id="plan-list" class="plan-list"><p class="empty-state">Add skills from a role profile or skill-gap result to start a plan.</p></div>
+          </article>
+        </section>
+
+        <section class="intel-panel hidden" id="intel-story" role="tabpanel" data-intel-panel="story" aria-label="Interactive data story">
+          <article class="panel story-panel"><div class="panel-heading"><div><h2>From postings to analysis</h2><p>A walkthrough of the pipeline and the evidence currently in the workspace.</p></div></div><ol id="data-story-steps" class="story-steps"></ol></article>
+        </section>
+      </section>
+
+      <section class="page hidden" id="skillgaps-view" data-page="skillgaps" aria-labelledby="gaps-heading">
+        <div class="page-heading"><div><p class="eyebrow">ROLE ANALYSIS</p><h1 id="gaps-heading" tabindex="-1">Skill Gaps</h1><p class="page-lead">Recommendations use the frequency of skills in matching job postings.</p></div></div>
+        <div class="analysis-grid">
+          <article class="panel form-panel">
+            <div class="panel-heading"><div><h2>Skill profile</h2><p>Choose a dataset role and list skills you already have.</p></div></div>
+            <form id="skill-gap-form" novalidate>
+              <label class="field" for="role-select">Target role or category<select id="role-select" data-role-options data-placeholder="Select a role or category" required></select></label>
+              <label class="field" for="skills-input">Current skills<textarea id="skills-input" rows="5" placeholder="Python, SQL, Git" aria-describedby="skill-input-hint"></textarea></label>
+              <p class="field-hint" id="skill-input-hint">Separate entries with commas; at most 100 skills, up to 100 characters each.</p>
+              <div class="quick-skills" aria-label="Add a common skill"><button type="button" data-skill="Python">+ Python</button><button type="button" data-skill="SQL">+ SQL</button><button type="button" data-skill="Git">+ Git</button></div>
+              <div class="form-actions"><button class="button button-primary" id="analyze-btn" type="submit">Analyze gaps</button><button class="button button-secondary" id="clear-gap-btn" type="button">Clear</button></div>
+              <p class="form-error" id="form-error" role="alert" aria-live="polite"></p>
+            </form>
+          </article>
+          <article class="panel results-panel" aria-labelledby="gap-results-heading">
+            <div class="panel-heading"><div><h2 id="gap-results-heading" tabindex="-1">Analysis results</h2><p id="gap-result-description">Run an analysis to see dataset-backed requirements.</p></div></div>
+            <div id="gap-results-state" class="empty-state">No analysis yet.</div>
+            <div id="gap-results" hidden>
+              <div class="result-summary-line"><div><span class="result-overline">TARGET ROLE</span><strong id="result-role">—</strong></div><div class="coverage-value"><span>Coverage</span><strong id="coverage-number">—</strong></div></div>
+              <progress id="coverage-progress" max="100" value="0" aria-label="Skill coverage"></progress>
+              <div class="result-counts"><div><span>Matched</span><strong id="matched-count">0</strong></div><div><span>Missing</span><strong id="missing-count">0</strong></div><div><span>Requirements</span><strong id="required-count">0</strong></div></div>
+              <section id="coverage-checklist" class="coverage-checklist" hidden><div class="section-title-line"><div><h3>Interactive skill checklist</h3><p>Toggle observed requirements to recalculate coverage locally.</p></div><button class="button button-secondary" id="export-gap-analysis" type="button">Export JSON</button></div><div id="coverage-checklist-items" class="checklist-grid"></div><button class="text-button" id="add-gaps-to-plan" type="button">Add missing skills to my plan <span aria-hidden="true">→</span></button></section>
+              <div class="result-columns"><section><h3>Skills already matched</h3><ul class="skill-list" id="matched-skills-list"></ul></section><section><h3>Missing requirements</h3><ul class="skill-list missing-list" id="missing-skills-list"></ul></section></div>
+              <div class="recommendation-section"><h3>Recommendations</h3><div class="table-wrap"><table><thead><tr><th scope="col">Skill</th><th scope="col">Jobs</th><th scope="col">Coverage</th><th scope="col">Priority</th><th scope="col">Plan</th></tr></thead><tbody id="recommendation-list"></tbody></table></div></div>
+              <p class="method-note" id="method-note"></p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="page hidden" id="career-view" data-page="career" aria-labelledby="career-heading">
+        <div class="page-heading"><div><p class="eyebrow">ROLE TRANSITIONS</p><h1 id="career-heading" tabindex="-1">Career Paths</h1><p class="page-lead">Routes are inferred from observed skill overlap; scores are not transition probabilities.</p></div></div>
+        <article class="panel workflow-panel">
+          <form id="career-form" class="inline-form" novalidate>
+            <label class="field" for="career-start-role">Source role or category<select id="career-start-role" data-role-options data-placeholder="Select source role" required></select></label>
+            <label class="field" for="career-target-role">Target role or category<select id="career-target-role" data-role-options data-placeholder="Select target role" required></select></label>
+            <label class="field optional-target" for="career-target-role-2">Compare another target (optional)<select id="career-target-role-2" data-role-options data-placeholder="Add another target"></select></label>
+            <label class="field optional-target" for="career-target-role-3">Third target (optional)<select id="career-target-role-3" data-role-options data-placeholder="Add a third target"></select></label>
+            <div class="form-actions"><button class="button button-primary" id="career-path-btn" type="submit">Compare paths</button><button class="button button-secondary" id="clear-career-btn" type="button">Clear</button></div>
+          </form>
+          <p class="field-hint">Each target is queried independently through the existing route. Route scores rank observed overlap; they are not employment probabilities.</p>
+          <div class="career-results-tools"><label class="field" for="career-results-filter">Filter results<input id="career-results-filter" type="search" placeholder="Filter by role or skill"></label><label class="field" for="career-results-sort">Sort routes<select id="career-results-sort"><option value="score">Route score</option><option value="shared">Shared skills</option></select></label></div>
+          <p class="form-error" id="career-path-error" role="alert" aria-live="polite"></p>
+          <div class="tool-results" id="career-path-results" role="status" aria-live="polite"><p class="empty-state">Choose source and target roles to inspect ranked paths.</p></div>
+        </article>
+      </section>
+
+      <section class="page hidden" id="whatif-view" data-page="whatif" aria-labelledby="whatif-heading">
+        <div class="page-heading"><div><p class="eyebrow">SCENARIO COMPARISON</p><h1 id="whatif-heading" tabindex="-1">What-if Analysis</h1><p class="page-lead">Explore changes to frequency-based skill recommendations; this is not a causal outcome forecast.</p></div></div>
+        <article class="panel workflow-panel">
+          <form id="what-if-form" novalidate>
+            <label class="field role-field" for="what-if-role">Target role or category<select id="what-if-role" data-role-options data-placeholder="Select a role or category" required></select></label>
+            <div class="scenario-input-grid">
+              <label class="field" for="what-if-current-skills">Current skills<textarea id="what-if-current-skills" rows="4" placeholder="Python, SQL" aria-describedby="whatif-input-hint"></textarea></label>
+              <label class="field" for="what-if-additions">Skills to add<textarea id="what-if-additions" rows="4" placeholder="Excel, Communication"></textarea></label>
+              <label class="field" for="what-if-removals">Skills to remove<textarea id="what-if-removals" rows="4" placeholder="SQL"></textarea></label>
+            </div>
+            <p class="field-hint" id="whatif-input-hint">Separate skills with commas. Each list allows up to 100 skills; each skill may contain up to 100 characters.</p>
+            <div class="scenario-examples"><span>Examples</span><button class="text-button" type="button" data-whatif-example="add">Add a common skill</button><button class="text-button" type="button" data-whatif-example="remove">Remove a listed skill</button></div>
+            <div class="change-review"><section><h2>Adding</h2><ul class="skill-list" id="additions-preview"><li class="subtle-item">No skills listed</li></ul></section><section><h2>Removing</h2><ul class="skill-list missing-list" id="removals-preview"><li class="subtle-item">No skills listed</li></ul></section></div>
+            <div class="form-actions"><button class="button button-primary" id="what-if-btn" type="submit">Compare scenario</button><button class="button button-secondary" id="clear-whatif-btn" type="button">Clear</button></div>
+          </form>
+          <p class="form-error" id="what-if-error" role="alert" aria-live="polite"></p>
+          <div class="tool-results" id="what-if-results" role="status" aria-live="polite"><p class="empty-state">Submit a skill scenario to compare the returned before and after recommendations.</p></div>
+        </article>
+      </section>
+
+      <section class="page hidden" id="modellab-view" data-page="modellab" aria-labelledby="model-heading">
+        <div class="page-heading"><div><p class="eyebrow">SAVED EVALUATION</p><h1 id="model-heading" tabindex="-1">Model Evaluation</h1><p class="page-lead">Classifier results are selected by training-only grouped cross-validation and then assessed on a held-out group split.</p></div></div>
+        <article class="panel evaluation-panel">
+          <p class="inline-state" id="model-lab-status" role="status" aria-live="polite">Loading saved classifier summary…</p>
+          <div id="model-summary-cards" class="evaluation-metrics"></div>
+          <section class="evaluation-section"><div class="panel-heading"><div><h2>Classifier comparison</h2><p>Validation macro-F1 across candidates; held-out scores are shown only for the selected model.</p></div></div><div class="model-chart" id="model-chart" aria-label="Validation macro-F1 by classifier"></div><div class="table-wrap"><table class="evaluation-table"><thead><tr><th scope="col">Model</th><th scope="col">Vectorizer</th><th scope="col">Validation macro-F1</th><th scope="col">Validation weighted-F1</th><th scope="col">Held-out test</th></tr></thead><tbody id="model-results-table"></tbody></table></div></section>
+          <section class="evaluation-section protocol-panel" id="evaluation-protocol"></section>
+          <section class="evaluation-section graph-benchmark-section"><div class="panel-heading"><div><h2>Graph recommender comparison · K=10</h2><p>Paired five-seed ranking metrics. Higher is better. GraphSAGE underperforms both baselines.</p></div></div><p class="inline-state" id="graph-benchmark-status" role="status" aria-live="polite">Loading paired benchmark artifact…</p><div id="graph-benchmark-chart" class="graph-benchmark-chart"></div><div class="table-wrap"><table class="benchmark-table"><thead><tr><th scope="col">Ranker</th><th scope="col">Precision@10</th><th scope="col">Recall@10</th><th scope="col">NDCG@10</th></tr></thead><tbody id="graph-benchmark-table"></tbody></table></div><div><h3 class="paired-delta-title">GraphSAGE paired differences · mean and 95% interval</h3><div class="table-wrap"><table class="benchmark-table"><thead><tr><th scope="col">Compared with</th><th scope="col">Precision@10</th><th scope="col">Recall@10</th><th scope="col">NDCG@10</th></tr></thead><tbody id="graph-benchmark-differences"></tbody></table></div><p class="fine-print">Intervals are approximate Student-t intervals across five seed-level differences; they are not a claim of universal or production-scale superiority.</p></div><p class="method-note">Transductive edge completion; not temporal forecasting or cold-start evaluation. Candidate skills are training-visible only. These ranking metrics are not classifier F1 scores.</p></section>
+          <section class="metric-definitions"><h2>Metric notes</h2><dl><div><dt>Macro-F1</dt><dd>Unweighted mean of class-level F1 scores.</dd></div><div><dt>Weighted-F1</dt><dd>Class-level F1 weighted by support.</dd></div><div><dt>Precision@10</dt><dd>Relevant items in the first ten divided by ten.</dd></div><div><dt>Recall@10</dt><dd>Relevant items in the first ten divided by held-out relevant skills.</dd></div><div><dt>NDCG@10</dt><dd>Ranking quality with higher-ranked relevant skills weighted more.</dd></div></dl></section>
+        </article>
+      </section>
+    </div>
+
+    <footer><span>SkillGraph-X <span class="footer-separator">/</span> Research prototype</span><span>Dataset-frequency recommendations · Experimental graph model</span></footer>
+  </main>
+</div>
+<div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

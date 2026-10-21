@@ -1,0 +1,40 @@
+{
+  "task": "job-category classification",
+  "target": "category",
+  "feature_columns": [
+    "job_title",
+    "job_description",
+    "skills"
+  ],
+  "vectorizer": "word_tfidf",
+  "model": "XGBoost",
+  "validation_macro_f1": 0.9504171355904653,
+  "validation_weighted_f1": 0.9498245368742534,
+  "test_accuracy": 0.978448275862069,
+  "test_macro_f1": 0.9783055637375668,
+  "test_weighted_f1": 0.9783831775424849,
+  "labels": [
+    "business-development",
+    "finance",
+    "hr",
+    "information-technology",
+    "sales"
+  ],
+  "dataset_rows": 1167,
+  "train_rows": 935,
+  "test_rows": 232,
+  "saved_model": "C:\\Users\\HP\\Desktop\\SkillGraph-X-Starter\\SkillGraph-X\\models\\job_category_best_model.joblib",
+  "split_strategy": {
+    "holdout": "First fold of 5-fold StratifiedGroupKFold (approximately 20%), random_state=42.",
+    "model_selection": "3-fold StratifiedGroupKFold applied only to the remaining training partition.",
+    "grouping": "Connected components joining shared job_id values and stateless character-hash cosine similarity >= threshold.",
+    "similarity_vectorizer": "HashingVectorizer (char_wb, n-grams 3-5, 2^18 features)",
+    "similarity_threshold": 0.95
+  },
+  "train_job_ids": 935,
+  "test_job_ids": 232,
+  "train_similarity_groups": 893,
+  "test_similarity_groups": 224,
+  "near_duplicate_groups": 37,
+  "near_duplicate_rows": 87
+}

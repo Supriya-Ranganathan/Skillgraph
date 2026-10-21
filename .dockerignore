@@ -1,0 +1,15 @@
+**
+!app/
+!app/Dockerfile
+!app/requirements-container.txt
+!app/main.py
+!app/skillgraph_core.py
+!app/static/
+!app/static/**
+!data/
+!data/processed/
+!data/processed/job_skill_edges.csv
+!models/
+!models/job_category_model_comparison.json
+!models/job_category_best_model_metadata.json
+!models/paired_graph_benchmark_evaluation.json

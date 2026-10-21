@@ -1,0 +1,42 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillgraph-x
+  labels:
+    app: skillgraph-x
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: skillgraph-x
+  template:
+    metadata:
+      labels:
+        app: skillgraph-x
+    spec:
+      containers:
+        - name: skillgraph-x
+          image: skillgraph-x:0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"

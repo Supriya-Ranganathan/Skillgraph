@@ -1,0 +1,68 @@
+{
+  "task": "held-out job-skill edge recommendation",
+  "split_strategy": {
+    "method": "Deterministic per-job edge holdout; each eligible job retains at least one observed skill.",
+    "heldout_fraction": 0.2,
+    "random_state": 42,
+    "training_graph_edges": 16222,
+    "heldout_target_edges": 4611,
+    "evaluation_jobs": 1167,
+    "jobs_with_one_skill_retained_in_training_only": 0,
+    "candidate_skill_vocabulary": "Skills observed in training edges only.",
+    "leakage_control": "Held-out edges are omitted before frequency and co-occurrence statistics are computed."
+  },
+  "k_values": [
+    5,
+    10,
+    20
+  ],
+  "metrics": {
+    "frequency": {
+      "5": {
+        "precision": 0.16041131105398398,
+        "recall": 0.20820139823995876,
+        "ndcg": 0.24701218325107077
+      },
+      "10": {
+        "precision": 0.10916880891173895,
+        "recall": 0.28470198990764506,
+        "ndcg": 0.28222073875888726
+      },
+      "20": {
+        "precision": 0.06910882604969941,
+        "recall": 0.35892874144802106,
+        "ndcg": 0.3109820879068151
+      }
+    },
+    "cooccurrence": {
+      "5": {
+        "precision": 0.16966580976863688,
+        "recall": 0.22120448579317473,
+        "ndcg": 0.258735949974843
+      },
+      "10": {
+        "precision": 0.11328191945158457,
+        "recall": 0.29457399926551564,
+        "ndcg": 0.2923970695606284
+      },
+      "20": {
+        "precision": 0.07210796915167027,
+        "recall": 0.37357897743501783,
+        "ndcg": 0.32343199668116884
+      }
+    }
+  },
+  "limitations": [
+    "Transductive edge completion: evaluation jobs contribute their non-held-out skills to the training graph.",
+    "Skills absent from all training edges are outside the candidate vocabulary and cannot be recommended.",
+    "The co-occurrence baseline uses unweighted counts from two-hop job-skill neighborhoods; it is not a trained GNN."
+  ],
+  "graph_artifacts": {
+    "full_graph": "C:\\Users\\HP\\Desktop\\SkillGraph-X-Starter\\SkillGraph-X\\data\\processed\\heterogeneous_skill_graph.npz",
+    "full_graph_mappings": "C:\\Users\\HP\\Desktop\\SkillGraph-X-Starter\\SkillGraph-X\\data\\processed\\heterogeneous_skill_graph_mappings.json",
+    "recommendation_training_graph": "C:\\Users\\HP\\Desktop\\SkillGraph-X-Starter\\SkillGraph-X\\data\\processed\\graph_baseline_training_graph.npz",
+    "recommendation_training_mappings": "C:\\Users\\HP\\Desktop\\SkillGraph-X-Starter\\SkillGraph-X\\data\\processed\\graph_baseline_training_mappings.json",
+    "recommendation_training_edges": 16222,
+    "heldout_edges_excluded_from_recommendation_graph": 4611
+  }
+}

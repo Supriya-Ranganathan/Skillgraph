@@ -1,0 +1,23 @@
+[
+    {
+        "Model": "Frequency baseline",
+        "Precision@10": 0.6666666666666666,
+        "Recall@10": 0.6666666666666666,
+        "NDCG@10": 0.6461858173485043,
+        "evaluated_jobs": 3
+    },
+    {
+        "Model": "Skill co-occurrence",
+        "Precision@10": 1.0,
+        "Recall@10": 1.0,
+        "NDCG@10": 1.0,
+        "evaluated_jobs": 3
+    },
+    {
+        "Model": "GraphSAGE",
+        "Precision@10": 0.5555555555555555,
+        "Recall@10": 0.5555555555555555,
+        "NDCG@10": 0.6666666666666666,
+        "evaluated_jobs": 3
+    }
+]

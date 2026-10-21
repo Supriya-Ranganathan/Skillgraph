@@ -1,0 +1,11 @@
+skill,jobs_requiring_skill,job_coverage,already_have,gap
+problem solving,191,0.796,False,True
+adaptability,112,0.467,False,True
+collaboration,88,0.367,False,True
+project management,84,0.35,False,True
+leadership,69,0.287,False,True
+customer service,66,0.275,False,True
+time management,57,0.237,False,True
+attention to detail,51,0.212,False,True
+communication,219,0.912,True,False
+teamwork,101,0.421,True,False

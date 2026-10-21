@@ -1,0 +1,112 @@
+{
+  "task": "bipartite job-skill link prediction",
+  "model": "heterogeneous GraphSAGE",
+  "validation_checkpoint_selection": "Highest validation average precision; ROC-AUC is the deterministic tie-breaker.",
+  "split": {
+    "source": "Existing deterministic Phase 3.1 training-only graph; its 4,611 held-out edges were split into validation and test.",
+    "seed": 43,
+    "training_positive_edges": 16222,
+    "validation_positive_edges": 2305,
+    "test_positive_edges": 2306,
+    "training_message_passing_edges": 16222,
+    "validation_test_edges_in_message_passing_adjacency": 0,
+    "train_jobs": 1167,
+    "full_skill_nodes": 4984,
+    "training_visible_candidate_skills": 4164
+  },
+  "negative_sampling": {
+    "ratio": "1:1 negatives to positives for training, validation, and test.",
+    "rule": "Uniform job-skill pair sampling; every known positive edge from all splits is excluded.",
+    "unobserved_pair_caveat": "Unobserved pairs may be undiscovered true relationships and are treated as negatives for this benchmark."
+  },
+  "validation_metrics": {
+    "best_epoch": 32,
+    "epochs_run": 40,
+    "validation_roc_auc": 0.7838990970304112,
+    "validation_average_precision": 0.861461648746377,
+    "training_loss_at_selected_epoch": 0.5156869888305664
+  },
+  "test_sampled_negative_metrics": {
+    "roc_auc": 0.7795347406253456,
+    "average_precision": 0.8567616126999299
+  },
+  "ranking_metrics_same_test_edges": {
+    "graphsage": {
+      "5": {
+        "precision": 0.084916201117319,
+        "recall": 0.2062339274629779,
+        "ndcg": 0.17952864463949375
+      },
+      "10": {
+        "precision": 0.05493482309124809,
+        "recall": 0.2650483284561498,
+        "ndcg": 0.20245677619480676
+      },
+      "20": {
+        "precision": 0.0324953445065178,
+        "recall": 0.3081448966923825,
+        "ndcg": 0.216344116684821
+      }
+    },
+    "frequency_same_test_split": {
+      "5": {
+        "precision": 0.08715083798882742,
+        "recall": 0.21138600691673323,
+        "ndcg": 0.2017745786289633
+      },
+      "10": {
+        "precision": 0.0600558659217882,
+        "recall": 0.29092622151281355,
+        "ndcg": 0.23309187785038035
+      },
+      "20": {
+        "precision": 0.03752327746741152,
+        "recall": 0.3604349561053468,
+        "ndcg": 0.254657523191665
+      }
+    },
+    "cooccurrence_same_test_split": {
+      "5": {
+        "precision": 0.09180633147113659,
+        "recall": 0.2217677573822826,
+        "ndcg": 0.2114608581553369
+      },
+      "10": {
+        "precision": 0.06182495344506559,
+        "recall": 0.2992750731577546,
+        "ndcg": 0.24196727884866678
+      },
+      "20": {
+        "precision": 0.03891992551210421,
+        "recall": 0.3744635097987049,
+        "ndcg": 0.26564102304771514
+      }
+    }
+  },
+  "phase3_2_reference_different_protocol": {
+    "protocol": "Existing Phase 3.2 single 20% per-job edge holdout; not directly identical to the GraphSAGE test subset.",
+    "metrics_at_10": {
+      "frequency": {
+        "precision": 0.10916880891173895,
+        "recall": 0.28470198990764506,
+        "ndcg": 0.28222073875888726
+      },
+      "cooccurrence": {
+        "precision": 0.11328191945158457,
+        "recall": 0.29457399926551564,
+        "ndcg": 0.2923970695606284
+      }
+    }
+  },
+  "checkpoint": "C:\\Users\\HP\\Desktop\\SkillGraph-X-Starter\\SkillGraph-X\\models\\graphsage_link_prediction.pt",
+  "configuration": "C:\\Users\\HP\\Desktop\\SkillGraph-X-Starter\\SkillGraph-X\\models\\graphsage_link_prediction_config.json",
+  "node_mapping_reference": "data/processed/heterogeneous_skill_graph_mappings.json",
+  "training_graph_reference": "data/processed/graph_baseline_training_graph.npz",
+  "runtime_seconds": 143.49832330000936,
+  "limitations": [
+    "Node features are trainable ID embeddings because the graph has no validated numeric or textual node-feature matrix; category and job-title metadata are not model inputs.",
+    "The model is transductive and uses the full node universe, including skills without a training edge; ranking candidates are restricted to training-visible skills for baseline comparability.",
+    "Sampled unobserved pairs are not guaranteed true negatives.",
+    "Phase 3.2 reference scores use a different single 20% edge holdout; same-test-split frequency and co-occurrence metrics are provided for direct ranking comparison."
+  ]
+}

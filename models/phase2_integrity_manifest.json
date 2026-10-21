@@ -1,0 +1,37 @@
+{
+    "algorithm":  "SHA-256",
+    "generated_at_utc":  "2026-10-13T19:44:48.2130208Z",
+    "scope_note":  "Hashes record current file contents at manifest generation time; they do not establish historical integrity.",
+    "artifacts":  [
+                      {
+                          "relative_path":  "models/baseline_metrics.json",
+                          "sha256":  "1bc6074a624bb7f9d4ad596385d9f47c8a4f488fc29dcdee603c034446d08e76",
+                          "size_bytes":  1361,
+                          "generated_at_utc":  "2026-10-13T19:44:48.2130208Z"
+                      },
+                      {
+                          "relative_path":  "models/model_comparison.json",
+                          "sha256":  "1307bfea5b3311987ae3cb876ba580d7102fd7b01f6fb5516496efa8ec8af678",
+                          "size_bytes":  369,
+                          "generated_at_utc":  "2026-10-13T19:44:48.2130208Z"
+                      },
+                      {
+                          "relative_path":  "models/job_category_model_comparison.json",
+                          "sha256":  "857971a1616508fbff9bb5927749ffa9d59b211d086adf2acec8e9c08ba18b3e",
+                          "size_bytes":  2334,
+                          "generated_at_utc":  "2026-10-13T19:44:48.2130208Z"
+                      },
+                      {
+                          "relative_path":  "models/job_category_best_model_metadata.json",
+                          "sha256":  "667789c9f738fa0ac4639a1ad2bc1abcb3bf8f236ba7d2860969a45418d4617d",
+                          "size_bytes":  1403,
+                          "generated_at_utc":  "2026-10-13T19:44:48.2130208Z"
+                      },
+                      {
+                          "relative_path":  "models/job_category_best_model.joblib",
+                          "sha256":  "0fd6f0400152ceca6456f33f50ea43ec042aadf06ea5ebe66270b3ba37823159",
+                          "size_bytes":  527269,
+                          "generated_at_utc":  "2026-10-13T19:44:48.2130208Z"
+                      }
+                  ]
+}
